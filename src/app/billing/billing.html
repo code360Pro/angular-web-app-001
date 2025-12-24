@@ -1,0 +1,48 @@
+<div class="container-fluid">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Billing Management</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group me-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Bill ID</th>
+                    <th scope="col">Client</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Due Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>B-1001</td>
+                    <td>Alpha Inc</td>
+                    <td>2024-12-01</td>
+                    <td>$2,500</td>
+                    <td>2024-12-31</td>
+                    <td><span class="badge bg-warning text-dark">Unpaid</span></td>
+                    <td><button class="btn btn-sm btn-primary">Pay</button></td>
+                </tr>
+                <tr>
+                    <td>B-1002</td>
+                    <td>Beta Corp</td>
+                    <td>2024-12-05</td>
+                    <td>$1,000</td>
+                    <td>2025-01-05</td>
+                    <td><span class="badge bg-success">Paid</span></td>
+                    <td><button class="btn btn-sm btn-secondary" disabled>Pay</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

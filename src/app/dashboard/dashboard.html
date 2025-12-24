@@ -1,0 +1,48 @@
+<div class="container-fluid">
+    <h2 class="mt-4">Dashboard</h2>
+    <div class="row mt-4">
+        @for (stat of stats(); track stat.title) {
+        <div class="col-md-3">
+            <div class="card text-white mb-3" [class]="stat.colorClass">
+                <div class="card-header">{{stat.title}}</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{stat.value}}</h5>
+                    <p class="card-text">{{stat.change}}</p>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Recent Activities
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Activity</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (activity of activities(); track activity.id) {
+                            <tr>
+                                <th scope="row">{{activity.id}}</th>
+                                <td>{{activity.activity}}</td>
+                                <td>{{activity.date}}</td>
+                                <td>{{activity.status}}</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
