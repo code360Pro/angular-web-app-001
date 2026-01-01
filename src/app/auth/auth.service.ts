@@ -1,24 +1,33 @@
 import { Injectable, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    // Use signal for reactive state, initialize from localStorage if available
-    isLoggedIn = signal<boolean>(!!localStorage.getItem('token'));
+    // Expose Auth0's isAuthenticated$ as a signal
+    isAuthenticated: any;
 
-    constructor(private router: Router) { }
+    // Expose user profile
+    user$: any;
+    user: any;
+
+    constructor(private auth0: Auth0Service) {
+        this.isAuthenticated = toSignal(this.auth0.isAuthenticated$, { initialValue: false });
+        this.user$ = this.auth0.user$;
+        this.user = toSignal(this.user$);
+    }
 
     login() {
-        localStorage.setItem('token', 'mock-token');
-        this.isLoggedIn.set(true);
-        this.router.navigate(['/dashboard']);
+        this.auth0.loginWithRedirect();
     }
 
     logout() {
-        localStorage.removeItem('token');
-        this.isLoggedIn.set(false);
-        this.router.navigate(['/login']);
+        this.auth0.logout({
+            logoutParams: {
+                returnTo: window.location.origin
+            }
+        });
     }
 }
