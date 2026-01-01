@@ -28,7 +28,7 @@ export interface DashboardData {
 })
 export class DashboardService {
     private http = inject(HttpClient);
-    private apiUrl = environment.apiUrl + '/api/dashboard';
+    private apiUrl = environment.apiUrl + '/dashboard';
 
     getDashboardData(): Observable<DashboardData> {
         return this.http.get<DashboardData>(this.apiUrl);
