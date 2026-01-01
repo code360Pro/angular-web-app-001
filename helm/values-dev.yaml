@@ -14,7 +14,8 @@ ingress:
   enabled: true
   className: haproxy
   hosts:
-    - paths:
+    - host: code360pro.com
+      paths:
         - path: /
           pathType: Prefix
 
