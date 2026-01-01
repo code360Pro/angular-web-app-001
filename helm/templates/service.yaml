@@ -1,0 +1,23 @@
+# Service Template
+# This template creates a Kubernetes Service resource to expose the application.
+# Key Values used:
+# - .Values.service.type: Service type (e.g., ClusterIP)
+# - .Values.service.port: Port exposed by the service
+# - .Values.application.port: Target port on the container
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "app.fullname" . }}
+  namespace: {{ .Values.namespace }}
+
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.application.port }} # Maps to application.port
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "app.selectorLabels" . | nindent 4 }}

@@ -1,0 +1,11 @@
+environment: dev
+namespace: rp-dev
+
+
+application:
+  port: 8080
+
+serviceAccount:
+  # The name of the service account to use.
+  name: "rp-dev-angular-web-app-gke-sa" # Leave empty to generate automatically, or set to override
+replicaCount: 1

@@ -1,0 +1,11 @@
+environment: prod
+namespace: rp-prod
+
+replicaCount: 2
+
+application:
+  port: 8080
+
+serviceAccount:
+  # The name of the service account to use.
+  name: "" # Leave empty to generate automatically, or set to override

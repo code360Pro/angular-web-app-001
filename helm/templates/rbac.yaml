@@ -1,0 +1,44 @@
+# RBAC Template
+# This template dynamically creates Roles and RoleBindings based on values.yaml.
+# Key Values used:
+# - .Values.rbac.create: Toggle RBAC creation
+# - .Values.rbac.roles: Map of roles to create (defines rules)
+# - .Values.rbac.bindings: Map of bindings to create (links roles to the application service account)
+{{- if .Values.rbac.create }}
+{{- range $roleKey, $roleValue := .Values.rbac.roles }}
+{{- if $roleValue.create }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "app.fullname" $ }}-{{ $roleValue.name }}
+  namespace: {{ $.Values.namespace }}
+
+  labels:
+    {{- include "app.labels" $ | nindent 4 }}
+rules:
+{{ toYaml $roleValue.rules }}
+---
+{{- end }}
+{{- end }}
+
+{{- range $bindingKey, $bindingValue := .Values.rbac.bindings }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "app.fullname" $ }}-{{ $bindingValue.name }}
+  namespace: {{ $.Values.namespace }}
+
+  labels:
+    {{- include "app.labels" $ | nindent 4 }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "app.serviceAccountName" $ }}
+  namespace: {{ $.Values.namespace }}
+
+roleRef:
+  kind: Role
+  name: {{ include "app.fullname" $ }}-{{ index $.Values.rbac.roles $bindingValue.roleName "name" }}
+  apiGroup: rbac.authorization.k8s.io
+---
+{{- end }}
+{{- end }}

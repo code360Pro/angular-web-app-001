@@ -1,0 +1,97 @@
+# Default values for java-spring-boot-api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Replica count for the deployment
+replicaCount: 1
+
+image:
+  # Container image repository
+  repository: IMAGE_PLACEHOLDER
+  # Image pull policy
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+# Overrides the name of the chart
+nameOverride: ""
+# Overrides the fully qualified app name
+fullnameOverride: ""
+
+# Default namespace for the application
+namespace: rp-dev
+
+# Environment name (e.g., dev, prod)
+environment: dev
+
+application:
+  # Application port
+  port: 8080
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+rbac:
+  # Specifies whether RBAC resources should be created
+  create: true
+  # Roles to create with their specific rules
+  roles:
+    view:
+      create: true
+      name: "role-view"
+      rules:
+        - apiGroups: ["", "apps"]
+          resources: ["pods", "services", "deployments"]
+          verbs: ["get", "list", "watch"]
+    deploy:
+      create: true
+      name: "role-deploy"
+      rules:
+        - apiGroups: ["", "apps"]
+          resources: ["pods", "services", "deployments"]
+          verbs: ["create", "update", "patch"]
+    delete:
+      create: true
+      name: "role-delete"
+      rules:
+        - apiGroups: ["", "apps"]
+          resources: ["pods", "services", "deployments"]
+          verbs: ["delete"]
+  # RoleBindings to create
+  bindings:
+    view:
+      name: "bind-view"
+      roleName: "view" # References key in rbac.roles
+
+service:
+  # Service type (e.g., ClusterIP, NodePort, LoadBalancer)
+  type: ClusterIP
+  # Service port
+  port: 80
+  # Target port on the container
+  targetPort: 8080
+
+resources:
+  # Resource requests and limits
+  requests:
+    memory: "512Mi"
+    cpu: "250m"
+  limits:
+    memory: "1Gi"
+    cpu: "500m"
+
+networkPolicy:
+  # Specifies whether NetworkPolicy should be created
+  enabled: true
+
+podAnnotations: {}
+
+imagePullSecrets: []
+
+securityContext: {}
