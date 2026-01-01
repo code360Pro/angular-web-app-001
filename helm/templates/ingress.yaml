@@ -4,12 +4,11 @@ kind: Ingress
 metadata:
   name: {{ include "app.fullname" . }}-ingress
   namespace: {{ .Values.namespace }}
-  labels:
-    {{- include "app.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    cert-manager.io/cluster-issuer: "letsencrypt-prod" # This triggers the SSL process
+    haproxy.org/ssl-redirect: "true"
+  labels:
+    {{- include "app.labels" . | nindent 4 }}  
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
