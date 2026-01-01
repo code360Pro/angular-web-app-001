@@ -73,7 +73,7 @@ jobs:
           docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
           docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest"
 
-  deploy:
+ deploy:
     name: Deploy to GKE
     needs: build-and-push
     runs-on: ubuntu-latest
@@ -99,14 +99,16 @@ jobs:
           cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
           location: ${{ secrets.GKE_CLUSTER_ZONE }}
 
-      - name: Deploy to GKE
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Deploy to GKE using Helm
         run: |-
-          # Replace the image placeholder with the actual image
-          sed -i "s|IMAGE_PLACEHOLDER|${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}|g" k8s/deployment.yaml
-          
-          # Apply the manifest
-          kubectl apply -f k8s/deployment.yaml
-          
-          # Wait for rollout to complete
-          kubectl rollout status deployment/angular-web-app
+          # helm dependency update ./helm
+          helm upgrade --install angular-web-app ./helm \
+            --values ./helm/values-dev.yaml \
+            --set image.repository=${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }} \
+            --set image.tag=${{ github.sha }} \
+            --wait
+
 
