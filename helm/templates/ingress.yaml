@@ -5,8 +5,11 @@ metadata:
   name: {{ include "app.fullname" . }}-ingress
   namespace: {{ .Values.namespace }}
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod" # This triggers the SSL process
-    haproxy.org/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # This ensures the challenge uses your existing Ingress rules
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    # Prevents HAProxy from forcing the challenge request to HTTPS/8443
+    haproxy.org/ssl-redirect: "false"
   labels:
     {{- include "app.labels" . | nindent 4 }}  
 spec:
