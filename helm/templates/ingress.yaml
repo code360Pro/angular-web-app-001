@@ -9,7 +9,7 @@ metadata:
     # This ensures the challenge uses your existing Ingress rules
     acme.cert-manager.io/http01-edit-in-place: "true"
     # Prevents HAProxy from forcing the challenge request to HTTPS/8443
-    haproxy.org/ssl-redirect: "false"
+    haproxy.org/ssl-redirect: "true"
   labels:
     {{- include "app.labels" . | nindent 4 }}  
 spec:

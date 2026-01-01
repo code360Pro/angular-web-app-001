@@ -105,6 +105,7 @@ jobs:
       - name: Deploy to GKE using Helm
         run: |-
           # helm dependency update ./helm
+          kubectl apply -f cert/issuer.yaml
           helm upgrade --install angular-web-app ./helm \
             --values ./helm/values-dev.yaml \
             --set image.repository=${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }} \
