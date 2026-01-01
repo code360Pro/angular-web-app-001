@@ -3,9 +3,26 @@ namespace: rp-dev
 
 
 application:
-  port: 8080
+  port: 80
 
 serviceAccount:
   # The name of the service account to use.
   name: "rp-dev-angular-web-app-gke-sa" # Leave empty to generate automatically, or set to override
 replicaCount: 1
+
+ingress:
+  enabled: true
+  className: haproxy
+  hosts:
+    - paths:
+        - path: /
+          pathType: Prefix
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "100m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+

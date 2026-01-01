@@ -75,15 +75,15 @@ service:
   # Service port
   port: 80
   # Target port on the container
-  targetPort: 8080
+  targetPort: 80
 
 resources:
   # Resource requests and limits
   requests:
-    memory: "512Mi"
-    cpu: "250m"
+    memory: "256Mi"
+    cpu: "100m"
   limits:
-    memory: "1Gi"
+    memory: "512Mi"
     cpu: "500m"
 
 networkPolicy:
@@ -95,3 +95,13 @@ podAnnotations: {}
 imagePullSecrets: []
 
 securityContext: {}
+
+ingress:
+  enabled: false
+  className: haproxy
+  annotations: {}
+  # hosts:
+  #   - host: chart-example.local
+  #     paths:
+  #       - path: /
+  #         pathType: Prefix
